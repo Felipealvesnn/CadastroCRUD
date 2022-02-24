@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Adicionar";
+}
+
+<h2>Adicionar Produto</h2>
+
+<form method="post">
+
+    <div class="mb-1">
+        <label for="txtNome">Nome:</label>
+        <input type="text" class="form-control" name="nome" id="txtNome" value="@Model.Nome" autofocus>
+    </div>
+
+    <div class="mb-3">
+        <label>Preço:</label>
+        <input type="text" class="form-control"value="@Model.Preco" name="preco">
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo:</label>
+        <input type="text" class="form-control" value="@Model.Tipo"name="tipo">
+    </div>
+
+    <div class="mb-3">
+        <label>Quantidade:</label>
+        <input type="text" class="form-control" value="@Model.Qtde" name="qtde">
+    </div>
+
+    
+    <button class="btn btn-success">Salvar c/ btn</button>
+
+</form>
