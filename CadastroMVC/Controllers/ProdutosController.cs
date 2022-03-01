@@ -26,29 +26,42 @@ namespace CadastroLivroMVC.Controllers
         [HttpGet]
         public ViewResult AddEdit(int? Id)
         {
-            Produtos produto = new Produtos();
-            if (Id != null) {
-                produto = _ctx.Produtos.Find(Id);
-                
-            }
-            return View(produto);
+            
+                Produtos produto = new Produtos();
+                if (Id != null) //se o Id for diferente de 0, ele procura e edita o produto
+                {
+                    produto = _ctx.Produtos.Find(Id);
+
+                }
+                var tipos = _ctx.TipoDeProdutos.ToList();
+                ViewBag.Tipo = tipos;
+                return View(produto);
+            
         }
 
         [HttpPost]
         public ActionResult AddEdit(Produtos produto)
         {
-            if (produto.Id == 0)
+            if (ModelState.IsValid)
             {
-                _ctx.Produtos.Add(produto);
-               
-            }
-            else {
-                _ctx.Entry(produto).State = System.Data.Entity.EntityState.Modified;
-            }
-            _ctx.SaveChanges();
+                if (produto.Id == 0)
+                {
+                    _ctx.Produtos.Add(produto);
 
+                }
+                else
+                {
+                    _ctx.Entry(produto).State = System.Data.Entity.EntityState.Modified;
+                }
+                _ctx.SaveChanges();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+
+            var tipos = _ctx.TipoDeProdutos.ToList();
+            ViewBag.Tipo = tipos;
+
+            return View(produto);
         }
 
         public ActionResult DelProd(int id) {

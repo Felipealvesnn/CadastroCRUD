@@ -1,33 +1,57 @@
-﻿
+﻿@model CadastroLivroMVC.Models.Produtos
 @{
-    ViewBag.Title = "Adicionar";
+    ViewBag.Title = $"{(Model.Id == 0 ? "Adicionar" : "editar ")} Produto";
 }
 
-<h2>Adicionar Produto</h2>
+<h2>@ViewBag.Title</h2>
 
 <form method="post">
 
+
     <div class="mb-1">
         <label for="txtNome">Nome:</label>
-        <input type="text" class="form-control" name="nome" id="txtNome" value="@Model.Nome" autofocus>
+        @Html.TextBoxFor(m => m.Nome, new { @class = "form-control", autofocus = "" })
+        <small>
+            @Html.ValidationMessageFor(m => m.Nome, null, new { @class = "text-danger" })
+        </small>
     </div>
 
     <div class="mb-3">
         <label>Preço:</label>
-        <input type="text" class="form-control"value="@Model.Preco" name="preco">
+        @Html.TextBoxFor(m => m.Preco, new { @class = "form-control", })
+        <small>
+            @Html.ValidationMessageFor(m => m.Preco, null, new { @class = "text-danger" })
+        </small>
     </div>
 
     <div class="mb-3">
         <label>Tipo:</label>
-        <input type="text" class="form-control" value="@Model.Tipo"name="tipo">
+        @Html.DropDownListFor(m => m.TipoDeProdutoId, new SelectList(ViewBag.Tipo, "Id", "Nome"), "Selecione...",
+       new { @class = "form-control" })
+        <small>
+            @Html.ValidationMessageFor(m => m.TipoDeProdutoId, null, new { @class = "text-danger" })
+        </small>
     </div>
 
     <div class="mb-3">
         <label>Quantidade:</label>
-        <input type="text" class="form-control" value="@Model.Qtde" name="qtde">
+        @Html.TextBoxFor(m => m.Qtde, new { @class = "form-control", })
+        <small>
+            @Html.ValidationMessageFor(m => m.Qtde, null, new { @class = "text-danger" })
+        </small>
     </div>
 
-    
-    <button class="btn btn-success">Salvar c/ btn</button>
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+    <div class="form-group">
+        <button class="btn btn-outline-secondary">Salvar</button>
+        <a class="btn btn-outline-info" href="@Url.Action("Index")">Cancelar</a>
+    </div>
 
 </form>
+@section Scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/Bootstrap.validate.js"></script>
+}
