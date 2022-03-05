@@ -1,22 +1,26 @@
-﻿using CadastroLivroMVC.Data;
-using CadastroLivroMVC.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using CadastroLivroMVC.ViewModels.Produto.Index.Maps;
+using CadastroMVC.Data.EF.Repositories;
+using CadastroMVC.Data.EF.REpositories;
+using CadastroMVC.Domain.Contratos.REpositorios;
+using CadastroMVC.Domain.Entities;
 using System.Web.Mvc;
+using CadastroLivroMVC.ViewModels.Produto.AddEdit;
+using CadastroLivroMVC.ViewModels.Produto.AddEdit.Maps;
 
 namespace CadastroLivroMVC.Controllers
 {
+    [Authorize]
     public class ProdutosController : Controller
     {
-        private readonly DbContexto _ctx = new DbContexto();
+        private readonly IProdutosRepository _ProdutoRepository = new ProdutoRepositoryEf();
+        private readonly ITipoDeProdutoRepository _TipoDeProdutosRepository = new TipoDeProdutoRepository();
         // GET: Produtos
         public ViewResult Index()
         {
-          
-              var produtos = _ctx.Produtos.ToList();
-            
+
+            var produtos = _ProdutoRepository.Retornatodos().ToprodutoIndexVM();
+
+
 
             return View(produtos);
         }
@@ -27,38 +31,39 @@ namespace CadastroLivroMVC.Controllers
         public ViewResult AddEdit(int? Id)
         {
             
-                Produtos produto = new Produtos();
+                var produto = new ProdutoAddEditVM();
                 if (Id != null) //se o Id for diferente de 0, ele procura e edita o produto
                 {
-                    produto = _ctx.Produtos.Find(Id);
+                    produto = _ProdutoRepository.Get((int)Id).ToProdutoAddEditVM();
 
                 }
-                var tipos = _ctx.TipoDeProdutos.ToList();
+                var tipos = _TipoDeProdutosRepository.Retornatodos();
                 ViewBag.Tipo = tipos;
                 return View(produto);
             
         }
 
         [HttpPost]
-        public ActionResult AddEdit(Produtos produto)
+        public ActionResult AddEdit(ProdutoAddEditVM produtoVM)
         {
+            var produto = produtoVM.ToProduto();
             if (ModelState.IsValid)
             {
                 if (produto.Id == 0)
                 {
-                    _ctx.Produtos.Add(produto);
+                    _ProdutoRepository.Add(produto);
 
                 }
                 else
                 {
-                    _ctx.Entry(produto).State = System.Data.Entity.EntityState.Modified;
+                    _ProdutoRepository.Edit(produto);
                 }
-                _ctx.SaveChanges();
+              
 
                 return RedirectToAction("Index");
             }
 
-            var tipos = _ctx.TipoDeProdutos.ToList();
+            var tipos = _TipoDeProdutosRepository.Retornatodos();
             ViewBag.Tipo = tipos;
 
             return View(produto);
@@ -66,19 +71,21 @@ namespace CadastroLivroMVC.Controllers
 
         public ActionResult DelProd(int id) {
 
-            var produto = _ctx.Produtos.Find(id);
+            var produto = _ProdutoRepository.Get(id);
             if (produto == null)
             {
                 return HttpNotFound();
             }
-            _ctx.Produtos.Remove(produto);
-            _ctx.SaveChanges();
+            _ProdutoRepository.Delete(produto);
+            
             return null;
         }
 
         protected override void Dispose(bool disposing)
         {
-            _ctx.Dispose();
+            _ProdutoRepository.Dispose();
+            _TipoDeProdutosRepository.Dispose();
         }
+
     }
 }
