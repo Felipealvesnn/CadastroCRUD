@@ -2,7 +2,6 @@
 using CadastroMVC.Data.EF.Repositories;
 using CadastroMVC.Data.EF.REpositories;
 using CadastroMVC.Domain.Contratos.REpositorios;
-using CadastroMVC.Domain.Entities;
 using System.Web.Mvc;
 using CadastroLivroMVC.ViewModels.Produto.AddEdit;
 using CadastroLivroMVC.ViewModels.Produto.AddEdit.Maps;
@@ -12,8 +11,16 @@ namespace CadastroLivroMVC.Controllers
     [Authorize]
     public class ProdutosController : Controller
     {
-        private readonly IProdutosRepository _ProdutoRepository = new ProdutoRepositoryEf();
-        private readonly ITipoDeProdutoRepository _TipoDeProdutosRepository = new TipoDeProdutoRepository();
+        private readonly IProdutosRepository _ProdutoRepository;
+        private readonly ITipoDeProdutoRepository _TipoDeProdutosRepository ;
+
+        public ProdutosController(IProdutosRepository produtosRepository, 
+            ITipoDeProdutoRepository TipoDeProdutosRepository)
+        {
+            _ProdutoRepository = produtosRepository;
+            _TipoDeProdutosRepository = TipoDeProdutosRepository;
+        }
+        
         // GET: Produtos
         public ViewResult Index()
         {

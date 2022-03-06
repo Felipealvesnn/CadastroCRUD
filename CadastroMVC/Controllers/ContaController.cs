@@ -9,7 +9,11 @@ namespace CadastroLivroMVC.Controllers
 {
     public class ContaController : Controller
     {
-        private readonly IUsuarioRepository _usuarioRepository = new UsuarioRepository();
+        private readonly IUsuarioRepository _usuarioRepository;
+        public ContaController(IUsuarioRepository usuariodependencia)
+        {
+            _usuarioRepository = usuariodependencia;
+        }
         // GET: Conta
         [HttpGet]
         public ActionResult Login(string returnURL)
