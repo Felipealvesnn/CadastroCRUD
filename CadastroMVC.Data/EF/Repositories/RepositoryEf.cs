@@ -9,7 +9,12 @@ namespace CadastroMVC.Data.EF.Repositories
     public class RepositoryEf<t> : IRepository<t> where t : Entity
     {
 
-        protected readonly DbContexto _ctx = new DbContexto();
+        protected readonly DbContexto _ctx;
+        public RepositoryEf(DbContexto ctx)
+        {
+            _ctx = ctx;
+
+        }
 
         public IEnumerable<t> Retornatodos()
         {
@@ -53,7 +58,7 @@ namespace CadastroMVC.Data.EF.Repositories
 
         public void Dispose()
         {
-            _ctx.Dispose();
+           
         }
 
     }

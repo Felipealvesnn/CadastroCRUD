@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace CadastroMVC.Data.EF.Repositories
 {
-   public  class TipoDeProdutoRepositoryEF :RepositoryEf<TipoDeProduto>, ITipoDeProdutoRepository
+    public class TipoDeProdutoRepositoryEF : RepositoryEf<TipoDeProduto>, ITipoDeProdutoRepository
     {
+        public TipoDeProdutoRepositoryEF(DbContexto ctx) : base(ctx)
+        {
+        }
     }
 }

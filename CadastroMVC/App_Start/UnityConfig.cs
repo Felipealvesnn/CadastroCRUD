@@ -1,3 +1,4 @@
+using CadastroMVC.Data.EF;
 using CadastroMVC.Data.EF.Repositories;
 using CadastroMVC.Data.EF.REpositories;
 using CadastroMVC.Domain.Contratos.REpositorios;
@@ -13,9 +14,12 @@ namespace CadastroLivroMVC
         {
             var container = new UnityContainer();
 
+            container.RegisterType<DbContexto>();
             container.RegisterType<IProdutosRepository, ProdutoRepositoryEf>();
             container.RegisterType<ITipoDeProdutoRepository, TipoDeProdutoRepositoryEF>();
             container.RegisterType<IUsuarioRepository, UsuarioRepository>();
+
+
 
 
 

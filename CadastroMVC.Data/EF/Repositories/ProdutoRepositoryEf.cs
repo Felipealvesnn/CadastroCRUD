@@ -8,7 +8,9 @@ namespace CadastroMVC.Data.EF.REpositories
 {
     public class ProdutoRepositoryEf : RepositoryEf<Produtos>, IProdutosRepository
     {
-      
+        public ProdutoRepositoryEf(DbContexto ctx) : base(ctx)
+        {
+        }
 
         public IEnumerable<Produtos> GetByNameContains(string contais)
         {

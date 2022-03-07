@@ -90,8 +90,7 @@ namespace CadastroLivroMVC.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            _ProdutoRepository.Dispose();
-            _TipoDeProdutosRepository.Dispose();
+            
         }
 
     }
